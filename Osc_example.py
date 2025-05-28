@@ -1,3 +1,4 @@
+# This is a example of doing once test using osc instrument include generate a impulse signal and get the response data and print data
 from moku.instruments import Oscilloscope
 import numpy as np
 import pandas as pd
@@ -19,8 +20,8 @@ try:
 
     # Get and print a single frame of data (time series
     # of voltage per channel)
-    data = Osc.get_data(wait_complete= True)
-    avertest = osc_test_np(Osc,'ch1',20)
+    data = Osc.get_data(wait_complete= True) # doing this is only for geting the time vector
+    avertest = osc_test_np(Osc,'ch1',20) # this is calling the function from mokulib file 
     print(data['time'][-1])
     print(len(data['time']))
     plt.plot(data['time'],avertest)
