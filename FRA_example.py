@@ -1,3 +1,4 @@
+# This is a example of doing once test using FRA instrument include generate a impulse signal and get the response data and print data
 from moku.instruments import FrequencyResponseAnalyzer
 import numpy as np
 import pandas as pd
