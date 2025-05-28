@@ -1,4 +1,4 @@
-# This is a example of doing once test using FRA instrument include generate a impulse signal and get the response data and print data
+# This is a example of doing once test using FRA instrument include generate a sine wave sweeping from 200 kHz to 20 kHz in 2048 points and get magnitude of the response data for every corresponding frequency
 from moku.instruments import FrequencyResponseAnalyzer
 import numpy as np
 import pandas as pd
