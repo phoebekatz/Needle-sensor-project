@@ -35,14 +35,24 @@ def DEIM(Ur):
     P, _, _ = deim(Ur_vectors)
 
     return P
-def plt_loss(train_losses,test_losses = None):
+
+def plt_loss(train_losses, test_losses=None, verifying_losses=None):
     plt.figure(figsize=(10, 5))
-    if test_losses!=None:
-        plt.plot(test_losses,label = "test loss")
-    plt.plot(train_losses,label ='Training Loss')
+    if test_losses is not None:
+        plt.plot(test_losses, label="Testing Loss")
+    if verifying_losses is not None:
+        plt.plot(verifying_losses, label="Verifying Loss")
+        
+        # 找到 verifying_losses 最低点对应的索引
+        best_epoch = int(np.argmin(verifying_losses))
+        # 在该索引处画一条竖直虚线
+        plt.axvline(x=best_epoch, linestyle='--', color='gray',
+                    label=f"Best Verify @ epoch {best_epoch} at {verifying_losses[best_epoch]:.2f}")
+        
+    plt.plot(train_losses, label="Training Loss")
     plt.xlabel("Epochs")
     plt.ylabel("Loss")
-    plt.title("Training Loss Over Epochs")
+    plt.title("Loss Over Epochs")
     plt.legend()
     plt.show()
 
@@ -114,6 +124,21 @@ def load_data_list(folderpath,materials, N = 3e5):
                 trans = data.values
                 data_list[j].append(trans)
                 labels[j].append(i)
+    return data_list, labels
+def load_to_alist(folderpath,materials, N = 3e5):
+    N = int(N)
+    data_list = []
+    labels = []
+    files = os.listdir(folderpath)
+    if len(files) > N:
+        files = files[0:N]
+    for i in range(len(materials)):
+        matching_files = [f for f in files if materials[i] in f]
+        for path in matching_files:
+            data = pd.read_csv(f'{folderpath}/{path}')
+            trans = data.values
+            data_list.append(trans)
+            labels.append(i)
     return data_list, labels
 def rebalance_weight(y):
     labels = torch.tensor(y,dtype=torch.long).squeeze()  # torch.Tensor, dtype=torch.long
